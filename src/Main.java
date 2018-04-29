@@ -256,136 +256,13 @@ public class Main {
 
         switch (in.toLowerCase()) {
             case "student":
-                System.out.println("Please enter the ID of the student you want to modify:");
-                try {
-                    int id = Integer.parseInt(input.nextLine());
-                    if (studentMap.containsKey(id)) {
-                        System.out.println("Modify this student? (y/n)");
-                        System.out.println(studentMap.get(id));
-                        in = input.nextLine();
-                        switch (in.toLowerCase()) {
-                            case "y":
-                                System.out.println("Please enter the new information.");
-                                System.out.println("Enter the first name:");
-                                String firstName = input.nextLine();
-
-                                System.out.println("Enter the last name:");
-                                String lastName = input.nextLine();
-
-                                System.out.println("Enter the email:");
-                                String email = input.nextLine();
-
-                                System.out.println("Enter the year:");
-                                int year = Integer.parseInt(input.nextLine());
-
-                                studentMap.replace(id, new Student(lastName, firstName, email, year, id));
-                                System.out.println("Entry updated!");
-                                System.out.println(studentMap.get(id));
-                                break;
-                            case "n":
-                                modifyPerson(studentMap, staffMap, facultyMap);
-                                break;
-                        }
-                    }
-                    else if (!studentMap.containsKey(id)) {
-                        System.out.println("ID not found.");
-                    }
-                }
-                catch (NumberFormatException e) {
-                    System.out.println("Entry must be a number.");
-                    modifyPerson(studentMap, staffMap, facultyMap);
-                }
-
+                modifyStudent(studentMap, staffMap, facultyMap);
                 break;
             case "staff":
-                System.out.println("Please enter the ID of the staff you want to modify:");
-                try {
-                    int id = Integer.parseInt(input.nextLine());
-                    if (staffMap.containsKey(id)) {
-                        System.out.println("Modify this staff? (y/n)");
-                        System.out.println(staffMap.get(id));
-                        in = input.nextLine();
-                        switch (in.toLowerCase()) {
-                            case "y":
-                                System.out.println("Please enter the new information.");
-                                System.out.println("Please enter the staff's last name:");
-                                String lastName = input.nextLine();
-
-                                System.out.println("Please enter this staff's title (Mr., Ms., etc.):");
-                                String title = input.nextLine();
-
-                                System.out.println("Please enter this staff's first name:");
-                                String firstName = input.nextLine();
-
-                                System.out.println("Please enter the staff's email address:");
-                                String email = input.nextLine();
-
-                                System.out.println("Please enter what office this staff is in:");
-                                String office = input.nextLine();
-
-                                staffMap.replace(id, new Staff(lastName, title, firstName, email, office, id));
-                                System.out.println("Entry updated!");
-                                System.out.println(staffMap.get(id));
-                                break;
-                            case "n":
-                                modifyPerson(studentMap, staffMap, facultyMap);
-                                break;
-                        }
-                    }
-                    else if (!studentMap.containsKey(id)) {
-                        System.out.println("ID not found.");
-                    }
-                }
-                catch (NumberFormatException e) {
-                    System.out.println("Entry must be a number.");
-                    modifyPerson(studentMap, staffMap, facultyMap);
-                }
-
+                modifyStaff(studentMap, staffMap, facultyMap);
                 break;
             case "faculty":
-                System.out.println("Please enter the ID of the faculty you want to modify:");
-                try {
-                    int id = Integer.parseInt(input.nextLine());
-                    if (facultyMap.containsKey(id)) {
-                        System.out.println("Modify this faculty? (y/n)");
-                        System.out.println(facultyMap.get(id));
-                        in = input.nextLine();
-                        switch (in.toLowerCase()) {
-                            case "y":
-                                System.out.println("Please enter the new information.");
-                                System.out.println("Please enter the faculty member's last name:");
-                                String lastName = input.nextLine();
-
-                                System.out.println("Please enter this faculty member's first name:");
-                                String firstName = input.nextLine();
-
-                                System.out.println("Please enter the faculty member's email address:");
-                                String email = input.nextLine();
-
-                                System.out.println("Please enter what office this faculty member is in:");
-                                String office = input.nextLine();
-
-                                System.out.println("Is this faculty member tenured?");
-                                String tenure = input.nextLine();
-
-                                facultyMap.replace(id, new Faculty(lastName, firstName, email, office, tenure, id));
-                                System.out.println("Entry updated!");
-                                System.out.println(facultyMap.get(id));
-                                break;
-                            case "n":
-                                modifyPerson(studentMap, staffMap, facultyMap);
-                                break;
-                        }
-                    }
-                    else if (!studentMap.containsKey(id)) {
-                        System.out.println("ID not found.");
-                    }
-                }
-                catch (NumberFormatException e) {
-                    System.out.println("Entry must be a number.");
-                    modifyPerson(studentMap, staffMap, facultyMap);
-                }
-
+                modifyFaculty(studentMap, staffMap, facultyMap);
                 break;
             case "exit":
                 System.out.println("Returning to menu...");
@@ -394,6 +271,161 @@ public class Main {
                 System.out.println("Category does not exist.");
                 modifyPerson(studentMap, staffMap, facultyMap);
                 break;
+        }
+
+    }
+
+    /**
+     * Method to modify a student in the directory
+     *
+     * @param studentMap: Map containing student information
+     * @param staffMap:   Map containing staff information
+     * @param facultyMap: Map containing faculty information
+     */
+    private static void modifyStudent(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
+        System.out.println("Please enter the ID of the student you want to modify:");
+        try {
+            int id = Integer.parseInt(input.nextLine());
+            if (studentMap.containsKey(id)) {
+                System.out.println("Modify this student? (y/n)");
+                System.out.println(studentMap.get(id));
+                String in = input.nextLine();
+                switch (in.toLowerCase()) {
+                    case "y":
+                        System.out.println("Please enter the new information.");
+                        System.out.println("Enter the first name:");
+                        String firstName = input.nextLine();
+
+                        System.out.println("Enter the last name:");
+                        String lastName = input.nextLine();
+
+                        System.out.println("Enter the email:");
+                        String email = input.nextLine();
+
+                        System.out.println("Enter the year:");
+                        int year = Integer.parseInt(input.nextLine());
+
+                        studentMap.replace(id, new Student(lastName, firstName, email, year, id));
+                        System.out.println("Entry updated!");
+                        System.out.println(studentMap.get(id));
+                        break;
+                    case "n":
+                        modifyPerson(studentMap, staffMap, facultyMap);
+                        break;
+                }
+            }
+            else if (!studentMap.containsKey(id)) {
+                System.out.println("ID not found.");
+            }
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Entry must be a number.");
+            modifyPerson(studentMap, staffMap, facultyMap);
+        }
+    }
+
+    /**
+     * Method to modify a staff in the directory
+     *
+     * @param studentMap: Map containing student information
+     * @param staffMap:   Map containing staff information
+     * @param facultyMap: Map containing faculty information
+     */
+    private static void modifyStaff(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
+        System.out.println("Please enter the ID of the staff you want to modify:");
+        try {
+            int id = Integer.parseInt(input.nextLine());
+            if (staffMap.containsKey(id)) {
+                System.out.println("Modify this staff? (y/n)");
+                System.out.println(staffMap.get(id));
+                String in = input.nextLine();
+                switch (in.toLowerCase()) {
+                    case "y":
+                        System.out.println("Please enter the new information.");
+                        System.out.println("Please enter the staff's last name:");
+                        String lastName = input.nextLine();
+
+                        System.out.println("Please enter this staff's title (Mr., Ms., etc.):");
+                        String title = input.nextLine();
+
+                        System.out.println("Please enter this staff's first name:");
+                        String firstName = input.nextLine();
+
+                        System.out.println("Please enter the staff's email address:");
+                        String email = input.nextLine();
+
+                        System.out.println("Please enter what office this staff is in:");
+                        String office = input.nextLine();
+
+                        staffMap.replace(id, new Staff(lastName, title, firstName, email, office, id));
+                        System.out.println("Entry updated!");
+                        System.out.println(staffMap.get(id));
+                        break;
+                    case "n":
+                        modifyPerson(studentMap, staffMap, facultyMap);
+                        break;
+                }
+            }
+            else if (!staffMap.containsKey(id)) {
+                System.out.println("ID not found.");
+            }
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Entry must be a number.");
+            modifyPerson(studentMap, staffMap, facultyMap);
+        }
+
+    }
+
+    /**
+     * Method to modify a faculty in the directory
+     *
+     * @param studentMap: Map containing student information
+     * @param staffMap:   Map containing staff information
+     * @param facultyMap: Map containing faculty information
+     */
+    private static void modifyFaculty(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
+        System.out.println("Please enter the ID of the faculty you want to modify:");
+        try {
+            int id = Integer.parseInt(input.nextLine());
+            if (facultyMap.containsKey(id)) {
+                System.out.println("Modify this faculty? (y/n)");
+                System.out.println(facultyMap.get(id));
+                String in = input.nextLine();
+                switch (in.toLowerCase()) {
+                    case "y":
+                        System.out.println("Please enter the new information.");
+                        System.out.println("Please enter the faculty member's last name:");
+                        String lastName = input.nextLine();
+
+                        System.out.println("Please enter this faculty member's first name:");
+                        String firstName = input.nextLine();
+
+                        System.out.println("Please enter the faculty member's email address:");
+                        String email = input.nextLine();
+
+                        System.out.println("Please enter what office this faculty member is in:");
+                        String office = input.nextLine();
+
+                        System.out.println("Is this faculty member tenured?");
+                        String tenure = input.nextLine();
+
+                        facultyMap.replace(id, new Faculty(lastName, firstName, email, office, tenure, id));
+                        System.out.println("Entry updated!");
+                        System.out.println(facultyMap.get(id));
+                        break;
+                    case "n":
+                        modifyPerson(studentMap, staffMap, facultyMap);
+                        break;
+                }
+            }
+            else if (!facultyMap.containsKey(id)) {
+                System.out.println("ID not found.");
+            }
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Entry must be a number.");
+            modifyPerson(studentMap, staffMap, facultyMap);
         }
 
     }
