@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class Main {
-
     // Opens scanner to receive user input
     private static Scanner input = new Scanner(System.in);
 
@@ -54,13 +53,13 @@ public class Main {
         // Switch to call various methods depending on input from scanner
         switch (in) {
             case "add student":
-                addStudent(studentMap);
+                addStudent(studentMap, staffMap, facultyMap);
                 break;
             case "add staff":
-                addStaff(staffMap);
+                addStaff(studentMap, staffMap, facultyMap);
                 break;
             case "add faculty":
-                addFaculty(facultyMap);
+                addFaculty(studentMap, staffMap, facultyMap);
                 break;
             case "modify":
                 modifyPerson(studentMap, staffMap, facultyMap);
@@ -91,11 +90,16 @@ public class Main {
      * Asks for ID, first/last name, email,
      * and year then adds them to tree
      *
-     * @param studentMap: Map containing student information
+     * @param studentMap : Map containing student information
+     * @param staffMap : Map containing staff information
+     * @param facultyMap : Map containing faculty information
      */
-    private static void addStudent(TreeMap<Integer, Student> studentMap) {
+    private static void addStudent(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
         System.out.println("Please enter the new student ID (six digits):");
         String in = input.nextLine();
+        if (in.toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
 
         // Checks entered string to be sure zero is not the first digit
         String idCheck = in.substring(0, 1);
@@ -104,16 +108,16 @@ public class Main {
             // Checks if entered ID is a number
             try {
                 Integer.parseInt(in);
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 System.out.println("Student ID must be a number.");
                 // Recursive calls are used to restart the specific method
-                addStudent(studentMap);
+                addStudent(studentMap, staffMap, facultyMap);
             }
             int id = Integer.parseInt(in);
 
             // If statement to make sure studentMap does not already contain the entered ID
             if (!studentMap.containsKey(id)) {
-
                 // Uses input from user and stores them into appropriate strings
                 System.out.println("Please enter the student's first name:");
                 String firstName = input.nextLine();
@@ -133,15 +137,16 @@ public class Main {
                 // Prints confirmation message then returns to main menu
                 System.out.println("Student added!");
                 System.out.println(studentMap.get(id));
-            } else {
-                System.out.println("This ID already exists!");
-                addStudent(studentMap);
             }
-        } else { // If zero is the first digit (or the ID is less than six digits), error is thrown
-            System.out.println("ID length error - ID must be six digits and cannot begin with zero");
-            addStudent(studentMap);
+            else {
+                System.out.println("This ID already exists!");
+                addStudent(studentMap, staffMap, facultyMap);
+            }
         }
-
+        else { // If zero is the first digit (or the ID is less than six digits), error is thrown
+            System.out.println("ID length error - ID must be six digits and cannot begin with zero");
+            addStudent(studentMap, staffMap, facultyMap);
+        }
     }
 
     /**
@@ -149,11 +154,16 @@ public class Main {
      * Asks for ID, first/last name, title,
      * email, and office then adds them to tree
      *
-     * @param staffMap: Map containing staff information
+     * @param studentMap : Map containing student information
+     * @param staffMap : Map containing staff information
+     * @param facultyMap : Map containing faculty information
      */
-    private static void addStaff(TreeMap<Integer, Staff> staffMap) {
+    private static void addStaff(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
         System.out.println("Please enter the new staff ID (six digits):");
         String in = input.nextLine();
+        if (in.toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
         String idCheck = in.substring(0, 1);
         if ((in.length() <= 6) && !idCheck.equals(0)) {
             try {
@@ -161,7 +171,7 @@ public class Main {
             }
                 catch (NumberFormatException e) {
                 System.out.println("Staff ID must be a number.");
-                addStaff(staffMap);
+                addStaff(studentMap, staffMap, facultyMap);
             }
             int id = Integer.parseInt(in);
 
@@ -188,29 +198,34 @@ public class Main {
             }
             else {
                 System.out.println("This ID already exists!");
-                addStaff(staffMap);
+                addStaff(studentMap, staffMap, facultyMap);
             }
         }
         else {
             System.out.println("ID length error - ID must be six digits and cannot begin with zero");
-            addStaff(staffMap);
+            addStaff(studentMap, staffMap, facultyMap);
         }
     }
 
     /**
      * Method for adding a faculty member
-     * @param facultyMap: Map containing faculty information
+     * @param studentMap : Map containing student information
+     * @param staffMap : Map containing staff information
+     * @param facultyMap : Map containing faculty information
      */
-    private static void addFaculty(TreeMap<Integer, Faculty> facultyMap) {
+    private static void addFaculty(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
         System.out.println("Please enter the new faculty ID (six digits):");
         String in = input.nextLine();
+        if (in.toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
         String idCheck = in.substring(0, 1);
         if ((in.length() <= 6) && !idCheck.equals(0)) {
             try {
                 Integer.parseInt(in);
             } catch (NumberFormatException e) {
                 System.out.println("Faculty ID must be a number.");
-                addFaculty(facultyMap);
+                addFaculty(studentMap, staffMap, facultyMap);
             }
             int id = Integer.parseInt(in);
 
@@ -235,11 +250,11 @@ public class Main {
                 System.out.println(facultyMap.get(id));
             } else {
                 System.out.println("This ID already exists!");
-                addFaculty(facultyMap);
+                addFaculty(studentMap, staffMap, facultyMap);
             }
         } else {
             System.out.println("ID length error - ID must be six digits and cannot begin with zero");
-            addFaculty(facultyMap);
+            addFaculty(studentMap, staffMap, facultyMap);
         }
     }
 
@@ -284,6 +299,9 @@ public class Main {
      */
     private static void modifyStudent(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
         System.out.println("Please enter the ID of the student you want to modify:");
+        if (input.nextLine().toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
         try {
             int id = Integer.parseInt(input.nextLine());
             if (studentMap.containsKey(id)) {
@@ -310,8 +328,9 @@ public class Main {
                         System.out.println(studentMap.get(id));
                         break;
                     case "n":
-                        modifyPerson(studentMap, staffMap, facultyMap);
                         break;
+                    default:
+                        System.out.println("Input not recognized.");
                 }
             }
             else if (!studentMap.containsKey(id)) {
@@ -333,6 +352,9 @@ public class Main {
      */
     private static void modifyStaff(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
         System.out.println("Please enter the ID of the staff you want to modify:");
+        if (input.nextLine().toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
         try {
             int id = Integer.parseInt(input.nextLine());
             if (staffMap.containsKey(id)) {
@@ -386,6 +408,9 @@ public class Main {
      */
     private static void modifyFaculty(TreeMap<Integer, Student> studentMap, TreeMap<Integer, Staff> staffMap, TreeMap<Integer, Faculty> facultyMap) {
         System.out.println("Please enter the ID of the faculty you want to modify:");
+        if (input.nextLine().toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
         try {
             int id = Integer.parseInt(input.nextLine());
             if (facultyMap.containsKey(id)) {
@@ -415,7 +440,6 @@ public class Main {
                         System.out.println(facultyMap.get(id));
                         break;
                     case "n":
-                        modifyPerson(studentMap, staffMap, facultyMap);
                         break;
                 }
             }
@@ -480,6 +504,10 @@ public class Main {
         System.out.println("Select where to print from: student, staff, faculty:");
         String in = input.nextLine();
 
+        if (in.toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
+
         switch (in.toLowerCase()) {
             case "student":
                 // Asks user for ID of relevant category then prints the matching value
@@ -533,66 +561,20 @@ public class Main {
         System.out.println("Select what to remove: student, staff, faculty:");
         String in = input.nextLine();
 
+        if (in.toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
+
         switch (in.toLowerCase()) {
             case "student":
-                System.out.println("Please enter the student ID:");
-                int id = Integer.parseInt(input.nextLine());
+                removeStudent(studentMap, staffMap, facultyMap);
 
-                if (studentMap.containsKey(id)) {
-                    System.out.println(studentMap.get(id));
-                    System.out.println("Remove this student? (y/n)");
-                    switch (in.toLowerCase()) {
-                        case "y":
-                            studentMap.remove(id);
-                            System.out.println("Student removed.");
-                            break;
-                        case "n":
-                            removePerson(studentMap, staffMap, facultyMap);
-                        default:
-                            System.out.println("Input not recognized.");
-                            removePerson(studentMap, staffMap, facultyMap);
-                    }
-                }
                 break;
             case "staff":
-                System.out.println("Please enter the staff ID:");
-                id = Integer.parseInt(input.nextLine());
-
-                if (staffMap.containsKey(id)) {
-                    System.out.println(staffMap.get(id));
-                    System.out.println("Remove this staFff? (y/n)");
-                    switch (in.toLowerCase()) {
-                        case "y":
-                            staffMap.remove(id);
-                            System.out.println("Staff removed.");
-                            break;
-                        case "n":
-                            removePerson(studentMap, staffMap, facultyMap);
-                        default:
-                            System.out.println("Input not recognized.");
-                            removePerson(studentMap, staffMap, facultyMap);
-                    }
-                }
+                removeStaff(studentMap, staffMap, facultyMap);
                 break;
             case "faculty":
-                System.out.println("Please enter the faculty ID:");
-                id = Integer.parseInt(input.nextLine());
-
-                if (facultyMap.containsKey(id)) {
-                    System.out.println(facultyMap.get(id));
-                    System.out.println("Remove this staff? (y/n)");
-                    switch (in.toLowerCase()) {
-                        case "y":
-                            facultyMap.remove(id);
-                            System.out.println("Faculty removed.");
-                            break;
-                        case "n":
-                            removePerson(studentMap, staffMap, facultyMap);
-                        default:
-                            System.out.println("Input not recognized.");
-                            removePerson(studentMap, staffMap, facultyMap);
-                    }
-                }
+                removeFaculty(studentMap, staffMap, facultyMap);
                 break;
             case  "exit":
                 System.out.println("Returning to menu...");
@@ -600,6 +582,83 @@ public class Main {
             default:
                 System.out.println("Category not recognized.");
                 removePerson(studentMap, staffMap, facultyMap);
+        }
+    }
+
+    private static void removeStudent(TreeMap<Integer,Student> studentMap, TreeMap<Integer,Staff> staffMap, TreeMap<Integer,Faculty> facultyMap) {
+        System.out.println("Please enter the student ID:");
+
+        if (input.nextLine().toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
+
+        int id = Integer.parseInt(input.nextLine());
+
+        if (studentMap.containsKey(id)) {
+            System.out.println(studentMap.get(id));
+            System.out.println("Remove this student? (y/n)");
+            switch (input.nextLine().toLowerCase()) {
+                case "y":
+                    studentMap.remove(id);
+                    System.out.println("Student removed.");
+                    break;
+                case "n":
+                    removePerson(studentMap, staffMap, facultyMap);
+                default:
+                    System.out.println("Input not recognized.");
+                    removePerson(studentMap, staffMap, facultyMap);
+            }
+        }
+    }
+
+    private static void removeStaff(TreeMap<Integer,Student> studentMap, TreeMap<Integer,Staff> staffMap, TreeMap<Integer,Faculty> facultyMap) {
+        System.out.println("Please enter the staff ID:");
+
+        if (input.nextLine().toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
+
+        int id = Integer.parseInt(input.nextLine());
+
+        if (staffMap.containsKey(id)) {
+            System.out.println(staffMap.get(id));
+            System.out.println("Remove this staFff? (y/n)");
+            switch (input.nextLine().toLowerCase()) {
+                case "y":
+                    staffMap.remove(id);
+                    System.out.println("Staff removed.");
+                    break;
+                case "n":
+                    removePerson(studentMap, staffMap, facultyMap);
+                default:
+                    System.out.println("Input not recognized.");
+                    removePerson(studentMap, staffMap, facultyMap);
+            }
+        }
+    }
+
+    private static void removeFaculty(TreeMap<Integer,Student> studentMap, TreeMap<Integer,Staff> staffMap, TreeMap<Integer,Faculty> facultyMap) {
+        System.out.println("Please enter the faculty ID:");
+
+        if (input.nextLine().toLowerCase().equals("exit")) {
+            menu(studentMap, staffMap, facultyMap);
+        }
+
+        int id = Integer.parseInt(input.nextLine());
+
+        if (facultyMap.containsKey(id)) {
+            System.out.println(facultyMap.get(id));
+            System.out.println("Remove this staff? (y/n)");
+            switch (input.nextLine().toLowerCase()) {
+                case "y":
+                    facultyMap.remove(id);
+                    System.out.println("Faculty removed.");
+                    break;
+                case "n":
+                    removePerson(studentMap, staffMap, facultyMap);
+                default:
+                    System.out.println("Input not recognized.");
+            }
         }
     }
 }
