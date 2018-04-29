@@ -2,7 +2,7 @@
  * Subclass of person. Faculty is similar to staff but
  * with tenure instead of title.
  */
-public class Faculty extends Student {
+class Faculty extends Student {
     private String office;
     private String tenure;
 

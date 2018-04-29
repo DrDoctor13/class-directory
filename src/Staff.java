@@ -2,7 +2,7 @@
  * Subclass of person. Staff are persons with additional
  * variables for their office and title
  */
-public class Staff extends Student {
+class Staff extends Student {
     private String office;
     private String title;
 

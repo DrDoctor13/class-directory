@@ -3,7 +3,7 @@
  * Every entry in the database is a student by default,
  * different classes inherit it
  */
-public class Student {
+class Student {
     String firstName;
     String lastName;
     String email;
